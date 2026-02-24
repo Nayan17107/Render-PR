@@ -1,0 +1,219 @@
+<%- include('../header') %>
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #0f4c81 0%, #3b82f6 100%);
+        --surface: #ffffff;
+        --border-soft: #e5e7eb;
+        --text-main: #1f2937;
+        --text-soft: #6b7280;
+        --shadow: 0 12px 34px rgba(15, 76, 129, 0.12);
+    }
+
+    .page-wrapper { background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%); }
+    .page-title { font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    .filter-card,
+    .blog-card,
+    .empty-box {
+        background: var(--surface);
+        border: 1px solid var(--border-soft);
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+    }
+
+    .filter-card { padding: 16px; margin-bottom: 22px; }
+    .filter-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr auto auto; gap: 10px; align-items: end; }
+
+    .form-control {
+        border: 2px solid var(--border-soft);
+        border-radius: 10px;
+        height: 44px;
+        background: #fcfdff;
+    }
+    .form-control:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.18);
+        outline: none;
+    }
+
+    .btn-main,
+    .btn-reset,
+    .btn-view,
+    .btn-edit,
+    .btn-delete {
+        border: none;
+        border-radius: 9px;
+        padding: 9px 14px;
+        color: #fff;
+        font-weight: 700;
+        font-size: .8rem;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-main,
+    .btn-view { background: var(--primary-gradient); }
+    .btn-reset { background: #64748b; }
+    .btn-edit { background: #f59e0b; }
+    .btn-delete { background: #ef4444; }
+
+    .blog-card {
+        overflow: hidden;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        transition: .2s ease;
+    }
+    .blog-card:hover { transform: translateY(-4px); }
+
+    .blog-image {
+        width: 100%;
+        height: 190px;
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        overflow: hidden;
+    }
+    .blog-image img { width: 100%; height: 100%; object-fit: cover; }
+
+    .blog-body { padding: 16px; display: flex; flex-direction: column; flex: 1; }
+    .blog-title { font-weight: 700; color: var(--text-main); margin-bottom: 8px; }
+    .meta { color: var(--text-soft); font-size: .87rem; margin-bottom: 6px; }
+    .badge-status {
+        font-size: .72rem;
+        font-weight: 700;
+        background: #eff6ff;
+        color: #1e40af;
+        border-radius: 999px;
+        padding: 4px 8px;
+    }
+    .actions { margin-top: auto; padding-top: 10px; }
+
+    .pagination { justify-content: center; margin-top: 24px; }
+    .page-link {
+        border: 1px solid var(--border-soft);
+        color: #1e40af;
+        border-radius: 8px;
+        margin: 0 3px;
+    }
+    .page-item.active .page-link {
+        border-color: #3b82f6;
+        background: #3b82f6;
+        color: #fff;
+    }
+
+    .empty-box { padding: 28px; text-align: center; color: #1e3a8a; font-weight: 600; }
+
+    @media (max-width: 992px) {
+        .filter-grid { grid-template-columns: 1fr; }
+        .btn-main, .btn-reset { width: 100%; text-align: center; }
+    }
+</style>
+
+<div class="page-wrapper">
+    <div class="page-breadcrumb">
+        <div class="row">
+            <div class="col-12 d-flex no-block align-items-center">
+                <h4 class="page-title">All Blogs</h4>
+                <div class="ml-auto text-right">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">View Blog</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="filter-card">
+            <form method="GET" action="/blog/view-blog" class="filter-grid">
+                <div>
+                    <label class="mb-1">Search</label>
+                    <input type="text" class="form-control" name="search" placeholder="Title or author" value="<%= search %>">
+                </div>
+                <div>
+                    <label class="mb-1">Category</label>
+                    <select class="form-control" name="category">
+                        <option value="">All Categories</option>
+                        <% categories.forEach((cat) => { %>
+                            <option value="<%= cat %>" <% if (category === cat) { %>selected<% } %>><%= cat %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div>
+                    <label class="mb-1">Status</label>
+                    <select class="form-control" name="sort">
+                        <option value="">All Status</option>
+                        <option value="draft" <% if (sort === 'draft') { %>selected<% } %>>Draft</option>
+                        <option value="published" <% if (sort === 'published') { %>selected<% } %>>Published</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-main">Filter</button>
+                <a href="/blog/view-blog" class="btn-reset">Reset</a>
+            </form>
+        </div>
+
+        <div class="row">
+            <% if (blogs && blogs.length > 0) { %>
+                <% blogs.forEach((blog) => { %>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="blog-card">
+                            <div class="blog-image">
+                                <% if (blog.image) { %>
+                                    <img src="<%= blog.image %>" alt="<%= blog.title %>">
+                                <% } %>
+                            </div>
+                            <div class="blog-body">
+                                <h5 class="blog-title"><%= blog.title %></h5>
+                                <p class="meta"><strong>Author:</strong> <%= blog.name %></p>
+                                <p class="meta"><strong>Category:</strong> <%= blog.category %></p>
+                                <p class="meta"><strong>Status:</strong> <span class="badge-status"><%= blog.status %></span></p>
+                                <p class="meta"><%= blog.description.substring(0, 90) %>...</p>
+                                <div class="actions">
+                                    <a href="/blog/view-single-blog/<%= blog._id %>" class="btn-view">View</a>
+                                    <a href="/blog/edit-blog/<%= blog._id %>" class="btn-edit">Edit</a>
+                                    <a href="/blog/delete-blog/<%= blog._id %>" class="btn-delete" onclick="return confirm('Delete this blog?')">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="col-12">
+                    <div class="empty-box">No blogs found. <a href="/blog/add-blog">Create your first blog</a></div>
+                </div>
+            <% } %>
+        </div>
+
+        <% if (totalPages > 1) { %>
+            <div class="row">
+                <div class="col-12">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            <% if (currentPage > 1) { %>
+                                <li class="page-item">
+                                    <a class="page-link" href="/blog/view-blog?page=<%= currentPage - 1 %>&search=<%= search %>&category=<%= category %>&sort=<%= sort %>">Previous</a>
+                                </li>
+                            <% } %>
+
+                            <% for (let i = 1; i <= totalPages; i++) { %>
+                                <li class="page-item <% if (i === currentPage) { %>active<% } %>">
+                                    <a class="page-link" href="/blog/view-blog?page=<%= i %>&search=<%= search %>&category=<%= category %>&sort=<%= sort %>"><%= i %></a>
+                                </li>
+                            <% } %>
+
+                            <% if (currentPage < totalPages) { %>
+                                <li class="page-item">
+                                    <a class="page-link" href="/blog/view-blog?page=<%= currentPage + 1 %>&search=<%= search %>&category=<%= category %>&sort=<%= sort %>">Next</a>
+                                </li>
+                            <% } %>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<%- include('../footer') %>

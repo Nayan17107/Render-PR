@@ -1,0 +1,123 @@
+<%- include('header') %>
+
+<div class="page-wrapper">
+    <div class="page-breadcrumb">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h4 class="page-title">Control Center</h4>
+                <p class="page-subtitle">Monitor content, users, and catalog updates from one place.</p>
+            </div>
+            <div class="col-md-4 text-md-right mt-3 mt-md-0">
+                <a href="/product/add-product" class="btn btn-primary px-4">Add New Product</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row metric-grid">
+            <div class="col-sm-6 col-lg-3 mb-4">
+                <div class="card metric-card metric-card-blue">
+                    <div class="card-body">
+                        <p class="metric-label">Total Products</p>
+                        <h3 class="metric-value">1,284</h3>
+                        <span class="metric-note">+8.2% this month</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3 mb-4">
+                <div class="card metric-card metric-card-green">
+                    <div class="card-body">
+                        <p class="metric-label">Published Blogs</p>
+                        <h3 class="metric-value">432</h3>
+                        <span class="metric-note">15 pending review</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3 mb-4">
+                <div class="card metric-card metric-card-orange">
+                    <div class="card-body">
+                        <p class="metric-label">Active Admins</p>
+                        <h3 class="metric-value">29</h3>
+                        <span class="metric-note">2 roles updated</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3 mb-4">
+                <div class="card metric-card metric-card-pink">
+                    <div class="card-body">
+                        <p class="metric-label">Open Tasks</p>
+                        <h3 class="metric-value">17</h3>
+                        <span class="metric-note">5 due today</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8 mb-4">
+                <div class="card dashboard-panel">
+                    <div class="card-body">
+                        <h5 class="panel-title">Quick Actions</h5>
+                        <div class="quick-actions">
+                            <a href="/admin/add-admin" class="quick-action-item">
+                                <i class="mdi mdi-account-plus"></i>
+                                <span>Add Admin</span>
+                            </a>
+                            <a href="/blog/add-blog" class="quick-action-item">
+                                <i class="mdi mdi-post-outline"></i>
+                                <span>Create Blog</span>
+                            </a>
+                            <a href="/category/add-category" class="quick-action-item">
+                                <i class="mdi mdi-folder-plus"></i>
+                                <span>Add Category</span>
+                            </a>
+                            <a href="/product/view-product" class="quick-action-item">
+                                <i class="mdi mdi-eye-outline"></i>
+                                <span>View Products</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card dashboard-panel">
+                    <div class="card-body">
+                        <h5 class="panel-title">Recent Activity</h5>
+                        <ul class="activity-list">
+                            <li><span class="activity-dot"></span>New product submitted in Electronics.</li>
+                            <li><span class="activity-dot"></span>Category "Accessories" updated by Admin.</li>
+                            <li><span class="activity-dot"></span>Blog draft moved to publish queue.</li>
+                            <li><span class="activity-dot"></span>Password policy change applied to team.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-4">
+                <div class="card dashboard-panel h-100">
+                    <div class="card-body">
+                        <h5 class="panel-title">System Summary</h5>
+                        <div class="summary-item">
+                            <span>Server Status</span>
+                            <strong class="text-success">Healthy</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Storage Usage</span>
+                            <strong>68%</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Failed Logins</span>
+                            <strong>4 Today</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Backups</span>
+                            <strong>Completed</strong>
+                        </div>
+                        <hr>
+                        <a href="/user/change-password" class="btn btn-outline-primary btn-block">Security Settings</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('footer') %>

@@ -1,0 +1,280 @@
+<%- include('../header') %>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #0f4c81 0%, #3b82f6 100%);
+            --danger: #dc2626;
+            --surface: #ffffff;
+            --border-soft: #e5e7eb;
+            --text-main: #1f2937;
+            --text-soft: #6b7280;
+            --shadow: 0 12px 34px rgba(15, 76, 129, 0.12);
+        }
+
+        .page-wrapper {
+            background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+        }
+
+        .page-title {
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-card,
+        .tool-card,
+        .table-card {
+            background: var(--surface);
+            border: 1px solid var(--border-soft);
+            border-radius: 14px;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-card {
+            padding: 18px;
+        }
+
+        .stat-number {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: #1d4ed8;
+            line-height: 1;
+        }
+
+        .stat-label {
+            margin-top: 8px;
+            color: var(--text-soft);
+            font-weight: 600;
+            font-size: .85rem;
+        }
+
+        .tool-card {
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            border: 2px solid var(--border-soft);
+            border-radius: 10px;
+            height: 44px;
+            padding: 10px 14px;
+        }
+
+        .search-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.18);
+            outline: none;
+        }
+
+        .btn-main,
+        .btn-edit,
+        .btn-delete {
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: #fff;
+            font-weight: 700;
+            font-size: .8rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-main {
+            background: var(--primary-gradient);
+        }
+
+        .btn-edit {
+            background: #0ea5e9;
+        }
+
+        .btn-delete {
+            background: var(--danger);
+        }
+
+        .table-card {
+            padding: 16px;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            border-top: 0;
+            border-bottom: 1px solid var(--border-soft);
+            color: #374151;
+            font-size: .82rem;
+            text-transform: uppercase;
+            letter-spacing: .2px;
+        }
+
+        .table td {
+            vertical-align: middle;
+            color: var(--text-main);
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .admin-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 999px;
+            object-fit: cover;
+            border: 2px solid #dbeafe;
+        }
+
+        .gender-badge {
+            font-size: .75rem;
+            font-weight: 700;
+            padding: 4px 9px;
+            border-radius: 999px;
+            background: #eff6ff;
+            color: #1e40af;
+        }
+
+        @media (max-width: 768px) {
+            .tool-card .row>div:last-child {
+                margin-top: 10px;
+                text-align: left !important;
+            }
+        }
+    </style>
+
+    <div class="page-wrapper">
+        <div class="page-breadcrumb">
+            <div class="row">
+                <div class="col-12 d-flex no-block align-items-center">
+                    <h4 class="page-title">Administrators</h4>
+                    <div class="ml-auto text-right">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">View Admin</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row mb-3">
+                <div class="col-md-4 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-number">
+                            <%= admins.length %>
+                        </div>
+                        <div class="stat-label">Total Admins</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-number">
+                            <%= admins.filter(a=> a.gender === 'Male').length %>
+                        </div>
+                        <div class="stat-label">Male Admins</div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="stat-card">
+                        <div class="stat-number">
+                            <%= admins.filter(a=> a.gender === 'Female').length %>
+                        </div>
+                        <div class="stat-label">Female Admins</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="row align-items-center">
+                    <div class="col-md-7">
+                        <input type="text" class="form-control search-input" id="adminSearch"
+                            placeholder="Search by name, email, contact...">
+                    </div>
+                    <div class="col-md-5 text-right">
+                        <a href="/admin/add-admin" class="btn-main">Add New Admin</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-responsive">
+                    <table class="table" id="zero_config">
+                        <thead>
+                            <tr>
+                                <th>Profile</th>
+                                <th>Name</th>
+                                <th>Gender</th>
+                                <th>Contact</th>
+                                <th>Email</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% admins.forEach((admin)=> { %>
+                                <tr>
+                                    <td><img src="<%= admin.profileImage || '/assets/images/users/1.jpg' %>"
+                                            alt="<%= admin.firstname %>" class="admin-avatar"></td>
+                                    <td><strong>
+                                            <%= admin.firstname %>
+                                                <%= admin.lastname %>
+                                        </strong></td>
+                                    <td><span class="gender-badge">
+                                            <%= admin.gender %>
+                                        </span></td>
+                                    <td>
+                                        <%= admin.contactNo %>
+                                    </td>
+                                    <td>
+                                        <%= admin.email %>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/edit-admin/<%= admin.id %>" class="btn-edit">Edit</a>
+                                        <a href="/admin/delete-admin/<%= admin.id %>" class="btn-delete"
+                                            onclick="return confirm('Are you sure you want to delete this administrator?')">Delete</a>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row d-none mt-3" id="noResults">
+                <div class="col-12">
+                    <div class="tool-card text-center">No administrators found.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('adminSearch');
+            const tableRows = document.querySelectorAll('tbody tr');
+            const noResults = document.getElementById('noResults');
+
+            searchInput.addEventListener('keyup', function () {
+                const searchTerm = this.value.toLowerCase();
+                let visibleRows = 0;
+
+                tableRows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        row.style.display = '';
+                        visibleRows++;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                if (visibleRows === 0 && searchTerm.length > 0) {
+                    noResults.classList.remove('d-none');
+                } else {
+                    noResults.classList.add('d-none');
+                }
+            });
+        });
+    </script>
+
+    <%- include('../footer') %>

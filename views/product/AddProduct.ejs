@@ -1,0 +1,471 @@
+<%- include('../header')%>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --card-shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.12);
+            --transition-smooth: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            --border-radius: 12px;
+        }
+
+        .page-title {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                width: 0;
+                opacity: 0;
+            }
+
+            to {
+                width: 60px;
+                opacity: 1;
+            }
+        }
+
+        .card {
+            border: none;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            animation: cardAppear 0.6s ease-out;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-horizontal {
+            padding: 20px;
+        }
+
+        .card-title.yext-center {
+            text-align: center;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .card-title.yext-center::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--primary-gradient);
+            border-radius: 3px;
+        }
+
+        .form-group.row {
+            margin-bottom: 25px;
+            transition: var(--transition-smooth);
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            align-items: center;
+        }
+
+        .form-group.row .col-sm-3,
+        .form-group.row .col-sm-9 {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .form-group.row .col-sm-3 {
+            flex: 0 0 190px;
+            max-width: 190px;
+        }
+
+        .form-group.row .col-sm-9 {
+            flex: 1 1 auto;
+            max-width: calc(100% - 190px);
+            padding-left: 14px;
+        }
+
+        .form-group.row:hover {
+            transform: translateX(5px);
+        }
+
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 15px;
+            transition: var(--transition-smooth);
+            background-color: #fcfcfc;
+            height: 46px;
+            line-height: 1.2;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+            transform: translateY(-2px);
+            background-color: white;
+        }
+
+        .form-control:hover:not(:focus) {
+            border-color: #b1b9e8;
+        }
+
+        label.control-label {
+            font-weight: 600;
+            color: #495057;
+            padding-top: 0;
+            transition: color 0.3s ease;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            min-height: 46px;
+        }
+
+        .form-group.row:hover label.control-label {
+            color: #667eea;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 8px;
+            padding: 12px 35px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+
+        .border-top {
+            border-top: 1px solid #f0f0f0 !important;
+            padding-top: 25px;
+        }
+
+        input[type="file"] {
+            padding: 8px;
+            height: auto;
+        }
+
+        input[type="file"]::file-selector-button {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            margin-right: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        .breadcrumb-item.active {
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .breadcrumb-item a {
+            color: #6c757d;
+            transition: color 0.3s ease;
+            text-decoration: none;
+        }
+
+        .breadcrumb-item a:hover {
+            color: #667eea;
+        }
+
+        textarea.form-control {
+            height: auto;
+            min-height: 110px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        select.form-control {
+            padding-left: 18px;
+            padding-right: 42px;
+            height: 50px;
+            line-height: 1.3;
+            background-position: right 12px center;
+        }
+
+        @media (max-width: 768px) {
+            .form-group.row {
+                margin-bottom: 20px;
+            }
+
+            .form-group.row .col-sm-3,
+            .form-group.row .col-sm-9 {
+                flex: 0 0 100%;
+                max-width: 100%;
+                padding-left: 0;
+            }
+
+            .form-group.row .col-sm-9 {
+                padding-left: 0;
+            }
+
+            label.control-label {
+                margin-bottom: 8px;
+                padding-top: 0;
+                justify-content: flex-start;
+            }
+
+            .btn-primary {
+                width: 100%;
+            }
+        }
+
+        select.form-control:not([size]):not([multiple]) {
+            height: calc(2.0625rem + 10px); 
+        }
+    </style>
+
+    <div class="page-wrapper">
+        <div class="page-breadcrumb">
+            <div class="row">
+                <div class="col-12 d-flex no-block align-items-center">
+                    <h4 class="page-title">Add Product</h4>
+                    <div class="ml-auto text-right">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Add Product</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-8">
+                    <div class="card">
+                        <form class="form-horizontal" action="/product/add-product" method="post"
+                            enctype="multipart/form-data">
+                            <div class="card-body">
+                                <h4 class="card-title yext-center">Add New Product</h4>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 text-right control-label col-form-label">Category</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="categoryid" name="categoryid" required>
+                                            <option value="">Select category</option>
+                                            <% category.forEach((cate)=> { %>
+                                                <option value="<%= cate._id %>">
+                                                    <%= cate.categoryname %>
+                                                </option>
+                                                <% }) %>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 text-right control-label col-form-label">Sub
+                                        Category</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="subcategoryid" name="subcategoryid" required>
+                                            <option value="">Select sub category</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 text-right control-label col-form-label">Extra
+                                        Category</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" id="extracategoryid" name="extracategoryid"
+                                            required>
+                                            <option value="">Select extra category</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 text-right control-label col-form-label">Product Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="productname" name="productname"
+                                            placeholder="Product name here" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 text-right control-label col-form-label">Description</label>
+                                    <div class="col-sm-9">
+                                        <textarea class="form-control" id="description" name="description"
+                                            placeholder="Product description" rows="4"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 text-right control-label col-form-label">Brand Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="brandname" name="brandname"
+                                            placeholder="Brand name here">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 text-right control-label col-form-label">Price</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" id="price" name="price" min="0"
+                                            step="0.01" placeholder="0.00" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 text-right control-label col-form-label">Discount
+                                        Price</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" id="discountprice"
+                                            name="discountprice" min="0" step="0.01" value="0">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 text-right control-label col-form-label">Stock</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" id="stock" name="stock" min="0"
+                                            step="1" value="0" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 text-right control-label col-form-label">Rating</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" id="rating" name="rating" min="0"
+                                            max="5" step="0.1" value="0">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 text-right control-label col-form-label">Primary
+                                        Image</label>
+                                    <div class="col-sm-9">
+                                        <input type="file" class="form-control" id="image" name="image"
+                                            accept="image/*">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 text-right control-label col-form-label">More
+                                        Images</label>
+                                    <div class="col-sm-9">
+                                        <input type="file" class="form-control" id="images" name="images"
+                                            accept="image/*" multiple>
+                                        <small class="form-text text-muted">Select multiple product images.</small>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="border-top text-center">
+                                <div class="card-body">
+                                    <button type="submit" class="btn btn-primary">Add Product</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let Category = document.getElementById('categoryid');
+            let SubCategory = document.getElementById('subcategoryid');
+            let ExtraCategory = document.getElementById('extracategoryid');
+
+            Category.addEventListener('change', () => {
+                SubCategory.innerHTML = "<option value=''>Select Sub Category</option>";
+                ExtraCategory.innerHTML = "<option value=''>Select Extra Category</option>";
+
+                let CategoryValue = Category.value;
+                if (!CategoryValue) return;
+
+                fetch(`/product/subcategory/${CategoryValue}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        data.subCategories.forEach(subCat => {
+                            let option = document.createElement('option');
+                            option.textContent = subCat.subcategoryname;
+                            option.value = subCat._id;
+                            SubCategory.appendChild(option);
+                        });
+                    })
+                    .catch(err => console.log(err));
+            });
+
+            SubCategory.addEventListener('change', () => {
+                ExtraCategory.innerHTML = "<option value=''>Select Extra Category</option>";
+
+                let SubCategoryValue = SubCategory.value;
+                if (!SubCategoryValue) return;
+
+                fetch(`/product/extracategory/${SubCategoryValue}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        data.extraCategories.forEach(extraCat => {
+                            let option = document.createElement('option');
+                            option.textContent = extraCat.extracategoryname;
+                            option.value = extraCat._id;
+                            ExtraCategory.appendChild(option);
+                        });
+                    })
+                    .catch(err => console.log(err));
+            });
+        </script>
+
+        <%- include('../footer')%>

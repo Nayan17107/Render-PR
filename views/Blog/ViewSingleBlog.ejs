@@ -1,0 +1,214 @@
+<%- include('../header') %>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #0f4c81 0%, #3b82f6 100%);
+            --surface: #ffffff;
+            --border-soft: #e5e7eb;
+            --text-main: #1f2937;
+            --text-soft: #6b7280;
+            --shadow: 0 14px 36px rgba(15, 76, 129, 0.14);
+        }
+
+        .page-wrapper {
+            background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+        }
+
+        .page-title {
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .single-card {
+            background: var(--surface);
+            border: 1px solid var(--border-soft);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .single-image {
+            width: 100%;
+            height: 360px;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            overflow: hidden;
+        }
+
+        .single-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .single-content {
+            padding: 28px;
+        }
+
+        .blog-title {
+            color: var(--text-main);
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.25;
+            margin-bottom: 18px;
+        }
+
+        .meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        .meta-item {
+            color: var(--text-soft);
+            font-size: .92rem;
+        }
+
+        .meta-item strong {
+            color: #334155;
+            font-weight: 700;
+        }
+
+        .status-badge {
+            display: inline-block;
+            font-size: .72rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        .status-draft {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-published {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .blog-content {
+            color: #4b5563;
+            line-height: 1.75;
+            margin-top: 16px;
+        }
+
+        .action-wrap {
+            margin-top: 24px;
+            padding-top: 18px;
+            border-top: 1px solid var(--border-soft);
+        }
+
+        .btn-back {
+            border: none;
+            border-radius: 10px;
+            padding: 10px 18px;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            background: var(--primary-gradient);
+            display: inline-block;
+        }
+
+        .btn-back:hover {
+            color: #fff;
+            text-decoration: none;
+            box-shadow: 0 8px 18px rgba(37, 99, 235, 0.28);
+        }
+
+        .empty-box {
+            background: #eef2ff;
+            border: 1px dashed #c7d2fe;
+            border-radius: 14px;
+            padding: 24px;
+            color: #3730a3;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .single-image {
+                height: 240px;
+            }
+
+            .single-content {
+                padding: 20px;
+            }
+
+            .blog-title {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+
+    <div class="page-wrapper">
+        <div class="page-breadcrumb">
+            <div class="row">
+                <div class="col-12 d-flex no-block align-items-center">
+                    <h4 class="page-title">Blog Details</h4>
+                    <div class="ml-auto text-right">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                                <li class="breadcrumb-item"><a href="/blog/view-blog">View Blog</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Blog Details</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <% if (blog) { %>
+                <div class="single-card">
+                    <div class="single-image">
+                        <% if (blog.image) { %>
+                            <img src="<%= blog.image %>" alt="<%= blog.title %>">
+                            <% } %>
+                    </div>
+
+                    <div class="single-content">
+                        <h1 class="blog-title">
+                            <%= blog.title %>
+                        </h1>
+
+                        <div class="meta-row">
+                            <div class="meta-item"><strong>Author:</strong>
+                                <%= blog.name %>
+                            </div>
+                            <div class="meta-item"><strong>Category:</strong>
+                                <%= blog.category %>
+                            </div>
+                            <div class="meta-item">
+                                <strong>Status:</strong>
+                                <% const statusLower=(blog.status || '' ).toLowerCase(); %>
+                                    <% if (statusLower==='draft' ) { %>
+                                        <span class="status-badge status-draft">Draft</span>
+                                        <% } else { %>
+                                            <span class="status-badge status-published">Published</span>
+                                            <% } %>
+                            </div>
+                        </div>
+
+                        <div class="blog-content">
+                            <%- blog.description %>
+                        </div>
+
+                        <div class="action-wrap">
+                            <a href="/blog/view-blog" class="btn-back">Back to Blogs</a>
+                        </div>
+                    </div>
+                </div>
+                <% } else { %>
+                    <div class="empty-box">
+                        Blog not found. <a href="/blog/view-blog">Go back to all blogs</a>
+                    </div>
+                    <% } %>
+        </div>
+    </div>
+
+    <%- include('../footer') %>

@@ -1,0 +1,339 @@
+<%- include('../header') %>
+
+<style>
+    :root {
+        --bg-main: linear-gradient(135deg, #f7f9fc 0%, #eef3ff 100%);
+        --card-bg: #ffffff;
+        --title-grad: linear-gradient(135deg, #0f4c81 0%, #3b82f6 100%);
+        --text-main: #1f2937;
+        --text-soft: #6b7280;
+        --border-soft: #e5e7eb;
+        --shadow-soft: 0 10px 28px rgba(15, 76, 129, 0.12);
+        --shadow-hover: 0 20px 40px rgba(59, 130, 246, 0.2);
+    }
+
+    .page-wrapper {
+        min-height: 100vh;
+        background: var(--bg-main);
+    }
+
+    .page-title {
+        font-size: 2rem;
+        font-weight: 800;
+        background: var(--title-grad);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .single-wrap {
+        background: var(--card-bg);
+        border: 1px solid var(--border-soft);
+        border-radius: 14px;
+        box-shadow: var(--shadow-soft);
+        overflow: hidden;
+    }
+
+    .gallery-main {
+        width: 100%;
+        height: 420px;
+        background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    
+    .no-image {
+        color: #1e3a8a;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+    }
+
+
+    .gallery-thumbs {
+        display: flex;
+        gap: 10px;
+        padding: 14px;
+        flex-wrap: wrap;
+        border-top: 1px solid var(--border-soft);
+        background: #f8faff;
+    }
+
+    .thumb-item {
+        width: 78px;
+        height: 78px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 2px solid #d1d5db;
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+
+    .thumb-item.active,
+    .thumb-item:hover {
+        border-color: #3b82f6;
+        transform: translateY(-2px);
+    }
+
+    .thumb-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .details {
+        padding: 22px;
+    }
+
+    .product-name {
+        color: var(--text-main);
+        font-size: 1.9rem;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .meta-line {
+        color: var(--text-soft);
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+    }
+
+    .meta-line strong {
+        color: #334155;
+    }
+
+    .price-row {
+        margin: 16px 0 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .price-main {
+        color: #065f46;
+        font-size: 1.5rem;
+        font-weight: 800;
+    }
+
+    .price-discount {
+        color: #b91c1c;
+        background: #fee2e2;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        font-weight: 700;
+    }
+
+    .badge-pill {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        margin-right: 6px;
+    }
+
+    .badge-stock-in {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .badge-stock-out {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    
+    .description-box {
+        margin-top: 16px;
+        padding: 14px;
+        border: 1px solid var(--border-soft);
+        border-radius: 10px;
+        color: #475569;
+        line-height: 1.6;
+        background: #fafcff;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+        white-space: normal;
+    }
+
+    .highlights {
+        margin-top: 16px;
+        padding: 14px;
+        border: 1px dashed #c7d2fe;
+        border-radius: 10px;
+        background: #eef2ff;
+    }
+
+    .highlights h6 {
+        color: #3730a3;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .highlights p {
+        color: #4338ca;
+        margin-bottom: 0;
+        font-size: 0.9rem;
+    }
+
+    .action-row {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .btn-card {
+        border: none;
+        border-radius: 8px;
+        padding: 9px 14px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .btn-card:hover {
+        transform: translateY(-2px);
+        text-decoration: none;
+    }
+
+    .btn-back { background: #2563eb; color: #fff; }
+    .btn-edit { background: #f59e0b; color: #fff; }
+    .btn-delete { background: #ef4444; color: #fff; }
+
+    .empty-state {
+        border: 1px dashed #c7d2fe;
+        background: #eef2ff;
+        border-radius: 14px;
+        padding: 28px;
+        text-align: center;
+        color: #3730a3;
+        font-weight: 600;
+    }
+
+    @media (max-width: 992px) {
+        .gallery-main { height: 300px; }
+        .product-name { font-size: 1.5rem; }
+    }
+</style>
+
+<div class="page-wrapper">
+    <div class="page-breadcrumb">
+        <div class="row">
+            <div class="col-12 d-flex no-block align-items-center">
+                <h4 class="page-title">View Product</h4>
+                <div class="ml-auto text-right">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="/product/view-product">View Product</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Single Product</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <% if (product) { %>
+            <div class="single-wrap">
+                <div class="row no-gutters">
+                    <div class="col-lg-6">
+                        <div class="gallery-main">
+                            <% if (gallery && gallery.length > 0) { %>
+                                <img id="mainProductImage" src="<%= gallery[0] %>" alt="<%= product.productname %>">
+                            <% } else { %>
+                                <span class="no-image">NO IMAGE</span>
+                            <% } %>
+                        </div>
+
+                        <% if (gallery && gallery.length > 1) { %>
+                            <div class="gallery-thumbs" id="galleryThumbs">
+                                <% gallery.forEach((img, i) => { %>
+                                    <div class="thumb-item <%= i === 0 ? 'active' : '' %>" data-image="<%= img %>">
+                                        <img src="<%= img %>" alt="Product Image <%= i + 1 %>">
+                                    </div>
+                                <% }) %>
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="details">
+                            <h2 class="product-name"><%= product.productname %></h2>
+
+                            <p class="meta-line"><strong>Category:</strong> <%= product.categoryid && product.categoryid.categoryname ? product.categoryid.categoryname : '-' %></p>
+                            <p class="meta-line"><strong>Sub Category:</strong> <%= product.subcategoryid && product.subcategoryid.subcategoryname ? product.subcategoryid.subcategoryname : '-' %></p>
+                            <p class="meta-line"><strong>Extra Category:</strong> <%= product.extracategoryid && product.extracategoryid.extracategoryname ? product.extracategoryid.extracategoryname : '-' %></p>
+                            <p class="meta-line"><strong>Brand:</strong> <%= product.brandname || '-' %></p>
+
+                            <div class="price-row">
+                                <span class="price-main">Rs. <%= product.price %></span>
+                                <% if (product.discountprice && product.discountprice > 0) { %>
+                                    <span class="price-discount">Discount Rs. <%= product.discountprice %></span>
+                                <% } %>
+                            </div>
+
+                            <div class="meta-line">
+                                <% if (product.stock > 0) { %>
+                                    <span class="badge-pill badge-stock-in">In Stock: <%= product.stock %></span>
+                                <% } else { %>
+                                    <span class="badge-pill badge-stock-out">Out Of Stock</span>
+                                <% } %>
+                                <span class="badge-pill badge-rating">Rating: <%= product.rating %> / 5</span>
+                            </div>
+
+                            <div class="description-box"><strong>Description:</strong><br><%= (product.description || 'No description available.').trim() %></div>
+
+                            <div class="highlights">
+                                <h6>Product Highlights</h6>
+                                <p>Updated: <%= new Date(product.updatedAt).toLocaleString() %> | Added: <%= new Date(product.createdAt).toLocaleDateString() %></p>
+                            </div>
+
+                            <div class="action-row">
+                                <a href="/product/view-product" class="btn-card btn-back">Back</a>
+                                <a href="/product/edit-product/<%= product._id %>" class="btn-card btn-edit">Edit</a>
+                                <a href="/product/delete-product/<%= product._id %>" class="btn-card btn-delete" onclick="return confirm('Delete this product?')">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } else { %>
+            <div class="empty-state">
+                Product not found. <a href="/product/view-product">Go back to product list</a>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<script>
+    const mainImage = document.getElementById('mainProductImage');
+    const thumbsWrap = document.getElementById('galleryThumbs');
+
+    if (mainImage && thumbsWrap) {
+        const thumbs = thumbsWrap.querySelectorAll('.thumb-item');
+        thumbs.forEach((thumb) => {
+            thumb.addEventListener('click', () => {
+                const newImage = thumb.getAttribute('data-image');
+                if (!newImage) return;
+
+                mainImage.src = newImage;
+                thumbs.forEach((t) => t.classList.remove('active'));
+                thumb.classList.add('active');
+            });
+        });
+    }
+</script>
+
+<%- include('../footer') %>
+
+
+
+

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Product Admin Panel">
+    <meta name="author" content="Product Admin">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon.png">
+    <title>Product Admin Panel</title>
+    <link href="/assets/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/dist/css/style.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/dist/css/custom-ui.css" rel="stylesheet">
+</head>
+
+<body class="ui-shell">
+    <%- include('partials/flash-messages') %>
+        <div class="preloader">
+            <div class="lds-ripple">
+                <div class="lds-pos"></div>
+                <div class="lds-pos"></div>
+            </div>
+        </div>
+
+        <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
+            data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+            <header class="topbar" data-navbarbg="skin5">
+                <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+                    <div class="navbar-header" data-logobg="skin5">
+                        <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
+                                class="ti-menu ti-close"></i></a>
+                        <a class="navbar-brand" href="/">
+                            <span class="brand-chip">PA</span>
+                            <span class="logo-text custom-brand-text">Product Admin</span>
+                        </a>
+                        <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)"
+                            data-toggle="collapse" data-target="#navbarSupportedContent"
+                            aria-controls="navbarSupportedContent" aria-expanded="false"
+                            aria-label="Toggle navigation"><i class="ti-more"></i></a>
+                    </div>
+
+                    <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
+                        <ul class="navbar-nav float-left mr-auto align-items-center">
+                            <li class="nav-item d-none d-md-block">
+                                <a class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)"
+                                    data-sidebartype="mini-sidebar" aria-label="Toggle sidebar">
+                                    <i class="mdi mdi-menu font-24"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item d-none d-lg-block">
+                                <div class="header-search-wrap">
+                                    <i class="ti-search"></i>
+                                    <input type="text" class="header-search"
+                                        placeholder="Search products, categories...">
+                                </div>
+                            </li>
+                        </ul>
+
+                        <ul class="navbar-nav float-right align-items-center">
+                            <li class="nav-item d-none d-md-block">
+                                <span class="header-status-pill">Live System</span>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="#"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <% if (locals.user && locals.user.profileImage !=="" ) { %>
+                                        <img src="<%= locals.user.profileImage %>" alt="user" class="rounded-circle"
+                                            width="34" height="34">
+                                        <% } else { %>
+                                            <img src="/assets/images/users/1.jpg" alt="user" class="rounded-circle"
+                                                width="34" height="34">
+                                            <% } %>
+                                </a>
+
+                                <% if (locals.user) { %>
+                                    <div class="dropdown-menu dropdown-menu-right user-dd animated">
+                                        <a class="dropdown-item" href="#">
+                                            <i class="ti-user m-r-5 m-l-5"></i>
+                                            <%= locals.user.firstname %>
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/user/change-password">
+                                            <i class="ti-settings m-r-5 m-l-5"></i>
+                                            Change Password
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="/user/logout">
+                                            <i class="fa fa-power-off m-r-5 m-l-5"></i>
+                                            Logout
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <div class="p-l-30 p-10">
+                                            <a href="/user/profile" class="btn btn-sm btn-success btn-rounded">View
+                                                Profile</a>
+                                        </div>
+                                    </div>
+                                    <% } %>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+
+            <aside class="left-sidebar" data-sidebarbg="skin5">
+                <div class="scroll-sidebar">
+                    <nav class="sidebar-nav">
+                        <ul id="sidebarnav" class="p-t-20">
+                            <li class="nav-small-cap"><span class="hide-menu">Core Navigation</span></li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/"
+                                    aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span
+                                        class="hide-menu">Dashboard</span></a>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+                                    aria-expanded="false"><i class="mdi mdi-account-multiple"></i><span
+                                        class="hide-menu">Admin</span></a>
+                                <ul aria-expanded="false" class="collapse first-level">
+                                    <li class="sidebar-item"><a href="/admin/add-admin" class="sidebar-link"><i
+                                                class="mdi mdi-note-outline"></i><span class="hide-menu">Add
+                                                Admin</span></a></li>
+                                    <li class="sidebar-item"><a href="/admin/view-admin" class="sidebar-link"><i
+                                                class="mdi mdi-note-plus"></i><span class="hide-menu">View
+                                                Admins</span></a></li>
+                                </ul>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+                                    aria-expanded="false"><i class="mdi mdi-note-plus"></i><span
+                                        class="hide-menu">Blogs</span></a>
+                                <ul aria-expanded="false" class="collapse first-level">
+                                    <li class="sidebar-item"><a href="/blog/add-blog" class="sidebar-link"><i
+                                                class="mdi mdi-note-outline"></i><span class="hide-menu">Add
+                                                Blog</span></a></li>
+                                    <li class="sidebar-item"><a href="/blog/view-blog" class="sidebar-link"><i
+                                                class="mdi mdi-note-plus"></i><span class="hide-menu">View
+                                                Blog</span></a></li>
+                                </ul>
+                            </li>
+
+                            <li class="sidebar-item">
+                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+                                    aria-expanded="false"><i class="mdi mdi-folder-multiple"></i><span
+                                        class="hide-menu">Category</span></a>
+                                <ul aria-expanded="false" class="collapse first-level">
+                                    <li class="sidebar-item"><a href="/category/view-category" class="sidebar-link"><i
+                                                class="mdi mdi-note-plus"></i><span class="hide-menu">View
+                                                Category</span></a></li>
+                                    <li class="sidebar-item"><a href="/category/add-category" class="sidebar-link"><i
+                                                class="mdi mdi-note-outline"></i><span class="hide-menu">Add
+                                                Category</span></a></li>
+                                </ul>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+                                    aria-expanded="false"><i class="mdi mdi-folder-outline"></i><span
+                                        class="hide-menu">Sub Category</span></a>
+                                <ul aria-expanded="false" class="collapse first-level">
+                                    <li class="sidebar-item"><a href="/subcategory/view-subcategory"
+                                            class="sidebar-link"><i class="mdi mdi-note-plus"></i><span
+                                                class="hide-menu">View Sub-Category</span></a></li>
+                                    <li class="sidebar-item"><a href="/subcategory/add-subcategory"
+                                            class="sidebar-link"><i class="mdi mdi-note-outline"></i><span
+                                                class="hide-menu">Add Sub-Category</span></a></li>
+                                </ul>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+                                    aria-expanded="false"><i class="mdi mdi-layers"></i><span class="hide-menu">Extra
+                                        Category</span></a>
+                                <ul aria-expanded="false" class="collapse first-level">
+                                    <li class="sidebar-item"><a href="/extracategory/view-extracategory"
+                                            class="sidebar-link"><i class="mdi mdi-note-plus"></i><span
+                                                class="hide-menu">View Extra-Category</span></a></li>
+                                    <li class="sidebar-item"><a href="/extracategory/add-extracategory"
+                                            class="sidebar-link"><i class="mdi mdi-note-outline"></i><span
+                                                class="hide-menu">Add Extra-Category</span></a></li>
+                                </ul>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)"
+                                    aria-expanded="false"><i class="mdi mdi-package-variant"></i><span
+                                        class="hide-menu">Products</span></a>
+                                <ul aria-expanded="false" class="collapse first-level">
+                                    <li class="sidebar-item"><a href="/product/view-product" class="sidebar-link"><i
+                                                class="mdi mdi-note-plus"></i><span class="hide-menu">View
+                                                Product</span></a></li>
+                                    <li class="sidebar-item"><a href="/product/add-product" class="sidebar-link"><i
+                                                class="mdi mdi-note-outline"></i><span class="hide-menu">Add
+                                                Product</span></a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </aside>

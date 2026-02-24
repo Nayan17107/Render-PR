@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Product Admin Authentication">
+    <meta name="author" content="Product Admin">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon.png">
+    <title>Verify OTP | Product Admin Panel</title>
+    <link href="/assets/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/dist/css/style.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/dist/css/custom-ui.css" rel="stylesheet">
+</head>
+
+<body class="auth-page">
+    <div class="main-wrapper">
+        <div class="preloader">
+            <div class="lds-ripple">
+                <div class="lds-pos"></div>
+                <div class="lds-pos"></div>
+            </div>
+        </div>
+
+        <div class="auth-wrapper d-flex justify-content-center align-items-center">
+            <div class="auth-panel auth-panel-single">
+                <div class="auth-form-wrap">
+                    <h3 class="auth-form-title">OTP Verification</h3>
+                    <p class="text-muted mb-3">Enter the OTP sent to your registered email.</p>
+                    <form class="form-horizontal" action="/user/verifyotp" method="post">
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control form-control-lg" name="verifyotp"
+                                placeholder="Enter OTP" required>
+                        </div>
+                        <button class="btn btn-primary btn-block" type="submit">Verify OTP</button>
+                        <a href="/user/login" class="btn btn-link btn-block mt-2">Back to Login</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        <% if (locals.flash.success && locals.flash.success.length > 0) { %>
+            const Toast = Swal.mixin({ toast: true, position: "top-end", showConfirmButton: false, timer: 3000, timerProgressBar: true });
+            Toast.fire({ icon: "success", title: "<%= locals.flash.success %>" });
+        <% } %>
+
+        <% if (locals.flash.error && locals.flash.error.length > 0) { %>
+            const Toast = Swal.mixin({ toast: true, position: "top-end", showConfirmButton: false, timer: 3000, timerProgressBar: true });
+            Toast.fire({ icon: "error", title: "<%= locals.flash.error %>" });
+        <% } %>
+
+        <% if (locals.flash.warning && locals.flash.warning.length > 0) { %>
+            const Toast = Swal.mixin({ toast: true, position: "top-end", showConfirmButton: false, timer: 3000, timerProgressBar: true });
+            Toast.fire({ icon: "warning", title: "<%= locals.flash.warning %>" });
+        <% } %>
+    </script>
+    <script>
+        $(".preloader").fadeOut();
+    </script>
+</body>
+
+</html>

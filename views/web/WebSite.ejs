@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Store | Products</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f6f7fb;
+            --surface: #ffffff;
+            --text: #1f2937;
+            --soft: #6b7280;
+            --line: #e5e7eb;
+            --primary: #0f766e;
+            --primary-dark: #115e59;
+            --accent: #f97316;
+            --shadow: 0 12px 32px rgba(15, 118, 110, 0.14);
+            --shadow-hover: 0 20px 46px rgba(17, 94, 89, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text);
+            background: radial-gradient(circle at top right, #cffafe 0%, #f6f7fb 50%) no-repeat;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: min(1180px, 92%);
+            margin: 0 auto;
+        }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.84);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.7);
+        }
+
+        .header-wrap {
+            height: 74px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            color: var(--primary-dark);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #334155;
+            font-weight: 600;
+            transition: color 0.25s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            padding: 42px 0 24px;
+            animation: fadeUp 0.5s ease;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.6rem, 3vw, 2.3rem);
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .hero p {
+            color: var(--soft);
+            max-width: 760px;
+            line-height: 1.6;
+        }
+
+        .filter-box {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: var(--shadow);
+            margin-top: 16px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field label {
+            color: #475569;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .field input,
+        .field select,
+        .field button,
+        .field a {
+            height: 42px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            padding: 0 12px;
+            font-family: inherit;
+            font-size: 0.92rem;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            outline: none;
+            border-color: #14b8a6;
+            box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.13);
+        }
+
+        .btn-apply,
+        .btn-reset {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .btn-apply {
+            background: linear-gradient(135deg, #0f766e, #14b8a6);
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-reset {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .btn-apply:hover,
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            opacity: 0.95;
+        }
+
+        .toolbar {
+            margin-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toolbar h2 {
+            font-size: 1.2rem;
+            color: #0f172a;
+        }
+
+        .toolbar p {
+            color: #64748b;
+            font-size: 0.92rem;
+        }
+
+        .products-grid {
+            margin: 18px 0 40px;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeUp 0.5s ease;
+            animation-delay: var(--delay, 0s);
+            animation-fill-mode: both;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-image {
+            /* use aspect ratio to keep consistent card image size */
+            aspect-ratio: 16 / 10;
+            width: 100%;
+            max-height: 260px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #a7f3d0, #67e8f9);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.35s ease;
+            display: block;
+        }
+
+        .card:hover .card-image img {
+            transform: scale(1.07);
+        }
+
+        .no-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #134e4a;
+            letter-spacing: 0.5px;
+        }
+
+        .badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(17, 24, 39, 0.84);
+            color: #fff;
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 0.76rem;
+            font-weight: 700;
+        }
+
+        .card-body {
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .name {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.4;
+        }
+
+        .meta {
+            color: #64748b;
+            font-size: 0.86rem;
+            line-height: 1.45;
+        }
+
+        .price-row {
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .price {
+            color: #0f766e;
+            font-size: 1.05rem;
+            font-weight: 800;
+        }
+
+        .discount {
+            font-size: 0.76rem;
+            color: #9a3412;
+            background: #ffedd5;
+            border-radius: 99px;
+            padding: 4px 8px;
+            font-weight: 700;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            padding-top: 8px;
+        }
+
+        .btn-view {
+            width: 100%;
+            height: 40px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #f97316, #fb923c);
+            color: #fff;
+            font-weight: 800;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-view:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 18px rgba(249, 115, 22, 0.33);
+        }
+
+        .empty {
+            grid-column: 1 / -1;
+            border: 1px dashed #94a3b8;
+            border-radius: 14px;
+            text-align: center;
+            padding: 36px 16px;
+            color: #334155;
+            background: #ffffff;
+        }
+
+        .site-footer {
+            border-top: 1px solid #e2e8f0;
+            background: #f8fafc;
+            margin-top: 8px;
+        }
+
+        .footer-wrap {
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            color: #475569;
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .products-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .filter-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 760px) {
+            .header-wrap {
+                height: auto;
+                padding: 14px 0;
+                flex-wrap: wrap;
+            }
+
+            .filter-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .footer-wrap {
+                min-height: auto;
+                padding: 16px 0;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container header-wrap">
+            <a href="/web/product" class="logo">Nexa Store</a>
+            <nav class="nav-links">
+                <a href="/web/product">Products</a>
+                <a href="/">Admin Panel</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Find Your Next Product</h1>
+            <p>Explore all products with smart search, sorting, and filtering by category, subcategory, extra category, and price range.</p>
+
+            <form method="GET" action="/web/product" class="filter-box">
+                <div class="filter-grid">
+                    <div class="field" style="grid-column: span 2;">
+                        <label>Search</label>
+                        <input type="text" name="search" value="<%= filters.search || '' %>" placeholder="Search by name, brand or description">
+                    </div>
+
+                    <div class="field">
+                        <label>Category</label>
+                        <select name="categoryid" id="categoryid">
+                            <option value="">All</option>
+                            <% categories.forEach((cat) => { %>
+                                <option value="<%= cat._id %>" <%= String(filters.categoryid || '') === String(cat._id) ? 'selected' : '' %>><%= cat.categoryname %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Sub Category</label>
+                        <select name="subcategoryid" id="subcategoryid">
+                            <option value="">All</option>
+                            <% subcategories.forEach((sub) => { %>
+                                <option value="<%= sub._id %>" <%= String(filters.subcategoryid || '') === String(sub._id) ? 'selected' : '' %>><%= sub.subcategoryname %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Extra Category</label>
+                        <select name="extracategoryid" id="extracategoryid">
+                            <option value="">All</option>
+                            <% extracategories.forEach((extra) => { %>
+                                <option value="<%= extra._id %>" <%= String(filters.extracategoryid || '') === String(extra._id) ? 'selected' : '' %>><%= extra.extracategoryname %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Min Price</label>
+                        <input type="number" min="0" name="minprice" value="<%= filters.minprice || '' %>" placeholder="0">
+                    </div>
+
+                    <div class="field">
+                        <label>Max Price</label>
+                        <input type="number" min="0" name="maxprice" value="<%= filters.maxprice || '' %>" placeholder="99999">
+                    </div>
+
+                    <div class="field">
+                        <label>Sort</label>
+                        <select name="sort">
+                            <option value="newest" <%= filters.sort === 'newest' ? 'selected' : '' %>>Newest</option>
+                            <option value="oldest" <%= filters.sort === 'oldest' ? 'selected' : '' %>>Oldest</option>
+                            <option value="price_low_high" <%= filters.sort === 'price_low_high' ? 'selected' : '' %>>Price Low to High</option>
+                            <option value="price_high_low" <%= filters.sort === 'price_high_low' ? 'selected' : '' %>>Price High to Low</option>
+                            <option value="rating_high_low" <%= filters.sort === 'rating_high_low' ? 'selected' : '' %>>Rating High to Low</option>
+                            <option value="name_a_z" <%= filters.sort === 'name_a_z' ? 'selected' : '' %>>Name A to Z</option>
+                            <option value="name_z_a" <%= filters.sort === 'name_z_a' ? 'selected' : '' %>>Name Z to A</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>Apply</label>
+                        <button type="submit" class="btn-apply">Search</button>
+                    </div>
+
+                    <div class="field">
+                        <label>Reset</label>
+                        <a href="/web/product" class="btn-reset">Reset</a>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="toolbar">
+            <div>
+                <h2>Product Catalog</h2>
+                <p><%= products.length %> product(s) found</p>
+            </div>
+        </section>
+
+        <section class="products-grid">
+            <% if (products && products.length > 0) { %>
+                <% products.forEach((item, index) => { %>
+                    <article class="card" style="--delay:<%= index * 0.05 %>s;">
+                        <div class="card-image">
+                            <span class="badge">Rating <%= item.rating || 0 %>/5</span>
+                            <% if (item.image) { %>
+                                <img src="<%= item.image %>" alt="<%= item.productname %>" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27600%27 height=%27400%27 viewBox=%270 0 600 400%27%3E%3Crect width=%27600%27 height=%27400%27 fill=%27%23d1fae5%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 fill=%27%230f766e%27 font-size=%2730%27 font-family=%27Arial%27%3ENO IMAGE%3C/text%3E%3C/svg%3E';">
+                            <% } else { %>
+                                <div class="no-image">NO IMAGE</div>
+                            <% } %>
+                        </div>
+
+                        <div class="card-body">
+                            <h3 class="name"><%= item.productname %></h3>
+                            <p class="meta"><strong>Brand:</strong> <%= item.brandname || '-' %></p>
+                            <p class="meta"><strong>Category:</strong> <%= item.categoryid && item.categoryid.categoryname ? item.categoryid.categoryname : '-' %></p>
+                            <p class="meta"><strong>Sub:</strong> <%= item.subcategoryid && item.subcategoryid.subcategoryname ? item.subcategoryid.subcategoryname : '-' %></p>
+                            <p class="meta"><strong>Stock:</strong> <%= item.stock %></p>
+
+                            <div class="price-row">
+                                <span class="price">Rs. <%= item.price %></span>
+                                <% if (item.discountprice && item.discountprice > 0) { %>
+                                    <span class="discount">Discount Rs. <%= item.discountprice %></span>
+                                <% } %>
+                            </div>
+
+                            <div class="card-footer">
+                                <a href="/web/product/<%= item._id %>" class="btn-view">View Product</a>
+                            </div>
+                        </div>
+                    </article>
+                <% }) %>
+            <% } else { %>
+                <div class="empty">
+                    No products found. Try changing search, sort, or filter options.
+                </div>
+            <% } %>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-wrap">
+            <p>Web Store Product Page</p>
+            <p>Copyright <%= new Date().getFullYear() %> Nexa Store</p>
+        </div>
+    </footer>
+
+    <script>
+        const category = document.getElementById('categoryid');
+        const sub = document.getElementById('subcategoryid');
+        const extra = document.getElementById('extracategoryid');
+
+        if (category && sub && extra) {
+            category.addEventListener('change', () => {
+                sub.value = '';
+                extra.value = '';
+            });
+
+            sub.addEventListener('change', () => {
+                extra.value = '';
+            });
+        }
+    </script>
+</body>
+
+</html>

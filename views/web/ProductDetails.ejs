@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #0f172a;
+            --soft: #64748b;
+            --line: #e2e8f0;
+            --primary: #0f766e;
+            --accent: #ea580c;
+            --shadow: 0 12px 30px rgba(15, 118, 110, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at top left, #ccfbf1 0%, #f8fafc 55%);
+            color: var(--text);
+        }
+
+        .container {
+            width: min(1100px, 92%);
+            margin: 0 auto;
+        }
+
+        .topbar {
+            min-height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .brand {
+            text-decoration: none;
+            color: #115e59;
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        .back {
+            text-decoration: none;
+            color: #334155;
+            font-weight: 700;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 10px 14px;
+            transition: all 0.2s ease;
+        }
+
+        .back:hover {
+            transform: translateY(-2px);
+            border-color: #14b8a6;
+            color: #0f766e;
+        }
+
+        .wrap {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 38px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .gallery-main {
+            /* keep a consistent large preview while maintaining aspect */
+            height: 420px;
+            max-height: 60vh;
+            background: linear-gradient(135deg, #99f6e4, #67e8f9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 8px;
+        }
+
+        .gallery-main img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            object-position: center;
+            display: block;
+        }
+
+        .no-image {
+            font-weight: 800;
+            color: #134e4a;
+            letter-spacing: 0.5px;
+        }
+
+        .thumbs {
+            display: flex;
+            gap: 10px;
+            padding: 12px;
+            border-top: 1px solid var(--line);
+            flex-wrap: wrap;
+            background: #f8fafc;
+        }
+
+        .thumb {
+            width: 74px;
+            height: 74px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #cbd5e1;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 0 0 auto;
+            background: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .thumb.active,
+        .thumb:hover {
+            border-color: #14b8a6;
+            transform: translateY(-2px);
+        }
+
+        .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .details {
+            padding: 20px;
+        }
+
+        .details h1 {
+            font-size: clamp(1.35rem, 2.6vw, 2rem);
+            margin-bottom: 12px;
+            color: #0f172a;
+        }
+
+        .meta {
+            color: var(--soft);
+            margin-bottom: 7px;
+            line-height: 1.5;
+        }
+
+        .meta strong {
+            color: #334155;
+        }
+
+        .price-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 14px 0 12px;
+        }
+
+        .price {
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 1.35rem;
+        }
+
+        .discount {
+            background: #ffedd5;
+            color: var(--accent);
+            border-radius: 999px;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .chip {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 4px 10px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .chip-stock {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .chip-rating {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .description {
+            margin-top: 14px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px;
+            line-height: 1.7;
+            color: #334155;
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        .dates {
+            margin-top: 14px;
+            font-size: 0.86rem;
+            color: #64748b;
+        }
+
+        .empty {
+            padding: 40px 18px;
+            text-align: center;
+            color: #334155;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-main {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="topbar">
+            <a class="brand" href="/web/product">Nexa Store</a>
+            <a class="back" href="/web/product">Back to Products</a>
+        </header>
+
+        <% if (product) { %>
+            <section class="wrap">
+                <div class="grid">
+                    <div>
+                        <div class="gallery-main">
+                            <% if (gallery && gallery.length > 0) { %>
+                                <img id="mainImage" src="<%= gallery[0] %>" alt="<%= product.productname %>" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27800%27 height=%27500%27 viewBox=%270 0 800 500%27%3E%3Crect width=%27800%27 height=%27500%27 fill=%27%23d1fae5%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 fill=%27%230f766e%27 font-size=%2736%27 font-family=%27Arial%27%3ENO IMAGE%3C/text%3E%3C/svg%3E';">
+                            <% } else { %>
+                                <span class="no-image">NO IMAGE</span>
+                            <% } %>
+                        </div>
+
+                        <% if (gallery && gallery.length > 1) { %>
+                            <div class="thumbs" id="thumbsWrap">
+                                <% gallery.forEach((img, index) => { %>
+                                    <div class="thumb <%= index === 0 ? 'active' : '' %>" data-image="<%= img %>">
+                                        <img src="<%= img %>" alt="thumb-<%= index + 1 %>" onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27160%27 height=%27160%27 viewBox=%270 0 160 160%27%3E%3Crect width=%27160%27 height=%27160%27 fill=%27%23d1fae5%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 dominant-baseline=%27middle%27 text-anchor=%27middle%27 fill=%27%230f766e%27 font-size=%2716%27 font-family=%27Arial%27%3ENO IMAGE%3C/text%3E%3C/svg%3E';">
+                                    </div>
+                                <% }) %>
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <div class="details">
+                        <h1><%= product.productname %></h1>
+                        <p class="meta"><strong>Brand:</strong> <%= product.brandname || '-' %></p>
+                        <p class="meta"><strong>Category:</strong> <%= product.categoryid && product.categoryid.categoryname ? product.categoryid.categoryname : '-' %></p>
+                        <p class="meta"><strong>Sub Category:</strong> <%= product.subcategoryid && product.subcategoryid.subcategoryname ? product.subcategoryid.subcategoryname : '-' %></p>
+                        <p class="meta"><strong>Extra Category:</strong> <%= product.extracategoryid && product.extracategoryid.extracategoryname ? product.extracategoryid.extracategoryname : '-' %></p>
+
+                        <div class="price-row">
+                            <span class="price">Rs. <%= product.price %></span>
+                            <% if (product.discountprice && product.discountprice > 0) { %>
+                                <span class="discount">Discount Rs. <%= product.discountprice %></span>
+                            <% } %>
+                        </div>
+
+                        <div>
+                            <span class="chip chip-stock"><%= product.stock > 0 ? 'In Stock: ' + product.stock : 'Out of Stock' %></span>
+                            <span class="chip chip-rating">Rating: <%= product.rating || 0 %> / 5</span>
+                        </div>
+
+                        <div class="description">
+                            <strong>Description:</strong><br>
+                            <%= (product.description || 'No description available for this product.').trim() %>
+                        </div>
+
+                        <div class="dates">
+                            <p>Created: <%= new Date(product.createdAt).toLocaleString() %></p>
+                            <p>Updated: <%= new Date(product.updatedAt).toLocaleString() %></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        <% } else { %>
+            <section class="wrap">
+                <div class="empty">
+                    Product not found. <a href="/web/product">Go back to product list</a>
+                </div>
+            </section>
+        <% } %>
+    </div>
+
+    <script>
+        const mainImage = document.getElementById('mainImage');
+        const thumbsWrap = document.getElementById('thumbsWrap');
+
+        if (mainImage && thumbsWrap) {
+            const thumbs = thumbsWrap.querySelectorAll('.thumb');
+            thumbs.forEach((thumb) => {
+                thumb.addEventListener('click', () => {
+                    const img = thumb.getAttribute('data-image');
+                    if (!img) return;
+
+                    mainImage.src = img;
+                    thumbs.forEach((item) => item.classList.remove('active'));
+                    thumb.classList.add('active');
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>

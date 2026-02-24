@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Product Admin Authentication">
+    <meta name="author" content="Product Admin">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon.png">
+    <title>Login | Product Admin Panel</title>
+    <link href="/assets/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/dist/css/style.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/dist/css/custom-ui.css" rel="stylesheet">
+</head>
+
+<body class="auth-page">
+    <div class="main-wrapper">
+        <div class="preloader">
+            <div class="lds-ripple">
+                <div class="lds-pos"></div>
+                <div class="lds-pos"></div>
+            </div>
+        </div>
+
+        <div class="auth-wrapper d-flex justify-content-center align-items-center">
+            <div class="auth-panel">
+                <div class="auth-branding">
+                    <h1>Product Admin</h1>
+                    <p>Manage products, blogs, and categories in one secure dashboard.</p>
+                    <div class="auth-badge">Secure Login</div>
+                </div>
+
+                <div class="auth-form-wrap">
+                    <div id="loginform">
+                        <h3 class="auth-form-title">Sign In</h3>
+                        <form class="form-horizontal" id="loginFormAction" action="/user/login" method="post">
+                            <div class="form-group mb-3">
+                                <input type="email" class="form-control form-control-lg" name="email"
+                                    placeholder="Email address" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="text" class="form-control form-control-lg" name="password"
+                                    placeholder="Password" required>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-4">
+                                <button class="btn btn-link p-0" id="to-recover" type="button">Forgot password?</button>
+                                <button class="btn btn-primary" type="submit">Login</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div id="recoverform" style="display:none;">
+                        <h3 class="auth-form-title">Recover Password</h3>
+                        <p class="text-muted mb-3">Enter your email and we will send an OTP.</p>
+                        <form action="/user/forget-password" method="post">
+                            <div class="form-group mb-3">
+                                <input type="text" class="form-control form-control-lg" name="email"
+                                    placeholder="Email Address" required>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-4">
+                                <a class="btn btn-link p-0" href="#" id="to-login" name="action">Back to login</a>
+                                <button class="btn btn-primary" type="submit" name="action">Send OTP</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+    <script src="/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        <% if (locals.flash.success && locals.flash.success.length > 0) { %>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "success",
+                title: "<%= locals.flash.success %>"
+            });
+        <% } %>
+
+        <% if (locals.flash.error && locals.flash.error.length > 0) { %>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "error",
+                title: "<%= locals.flash.error %>"
+            });
+        <% } %>
+
+        <% if (locals.flash.warning && locals.flash.warning.length > 0) { %>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "warning",
+                title: "<%= locals.flash.warning %>"
+            });
+        <% } %>
+    </script>
+    <script>
+        $(".preloader").fadeOut();
+        $('#to-recover').on("click", function () {
+            $("#loginform").slideUp();
+            $("#recoverform").fadeIn();
+        });
+        $('#to-login').click(function (e) {
+            e.preventDefault();
+            $("#recoverform").hide();
+            $("#loginform").fadeIn();
+        });
+    </script>
+</body>
+
+</html>
