@@ -1,6 +1,7 @@
 const express = require('express');
 require('dotenv').config();
 const passport = require('passport')
+const path = require('path')
 require('./Middleware/localstrategy');  
 const session = require('express-session');
 const flash = require('connect-flash');
@@ -12,8 +13,8 @@ const port = process.env.PORT;
 require('./Config/dbconnection')()
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({ extended: true }))
-app.use(express.static('public'))
-app.use("/uploads", express.static('uploads'))
+app.use(express.static(path.join(__dirname, 'Public')))
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 app.use(session({
     name: 'login',
