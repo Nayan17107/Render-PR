@@ -1,5 +1,5 @@
 const express = require('express')
-const { loginPage, login, logOut, profilePage, changepasswordpage, changepassword, sentopt, verifyotp, resetpasswword } = require('../controller/auth.controller')
+const { loginPage, login, logOut, profilePage, changepasswordpage, changepassword, sentopt, verifyotp, resetpasswword } = require('../Controller/auth.controller')
 const route = express.Router()
 const passport = require('passport')
 route.get('/login', loginPage)

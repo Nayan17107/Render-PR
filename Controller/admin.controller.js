@@ -1,4 +1,4 @@
-let adminModel = require('../model/admin.model')
+let adminModel = require('../Model/admin.model')
 let bcrypt = require('bcrypt')
 let path = require('path')
 let fs = require('fs')

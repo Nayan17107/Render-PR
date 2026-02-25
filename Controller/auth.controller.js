@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt')
-const adminModel = require('../model/admin.model')
+const adminModel = require('../Model/admin.model')
 const otpgenerator = require('otp-generator')
 const sendMail = require('../Middleware/sendmail')
 
